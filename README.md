@@ -1,3 +1,3 @@
-![pic](https://github.com/acdczlc/2143-OOP-Conley/blob/master/Photo%20on%208-29-16%20at%206.22%20PM.jpg)
+![pic](https://avatars3.githubusercontent.com/u/21322544?v=3&u=75243a69e5cdf5726cfd04d3b69acd5300d6b4f6&s=200)
 - Zachary Conley
 - acdczlc@gmail.com
