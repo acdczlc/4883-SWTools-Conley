@@ -19,14 +19,14 @@ with open(ids + name) as readfile: #open file of ids
     data = json.load(readfile)
 print("Please wait while game stats are downloaded. A confirmation will appear at the end.")
 for s_type, subdictionary in data.items(): #preseason
-    if s_type == "preseason":
-        for year, weeks in subdictionary.items():
-            print("Downloading "+str(year)+" preseason") 
-            for week, gameids in weeks.items(): # get data from web based on gameid from file
-                for gameid in gameids:
-                    newurl = stats_url + "%s/%s_gtd.json" % (gameid, gameid)
-                    urllib.urlretrieve(newurl, stats + gameid + ".json")
-                    sleep(sleeper) #sleep for an amount of time
+    #if s_type == "preseason":
+       # for year, weeks in subdictionary.items():
+          #  print("Downloading "+str(year)+" preseason") 
+           # for week, gameids in weeks.items(): # get data from web based on gameid from file
+              #  for gameid in gameids:
+                  #  newurl = stats_url + "%s/%s_gtd.json" % (gameid, gameid)
+                  #  urllib.urlretrieve(newurl, stats + gameid + ".json")
+                   # sleep(sleeper) #sleep for an amount of time
                     
     if s_type == "regular_season":
         for year, weeks in subdictionary.items():
