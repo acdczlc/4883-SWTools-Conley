@@ -24,18 +24,18 @@ gameids = { #3 types in a season
     }
    
 for year in years: #for each year searching
-        gameids['preseason'][year] = {} #creates dictionary to hold weeks for each year
+       # gameids['preseason'][year] = {} #creates dictionary to hold weeks for each year
         print("Fetching ids from year "+str(year)) #user message
 
-        for week in preseason: #for each preseason game
-            gameids['preseason'][year][week] = [] # creates list to hold gameids
-            url = sch + '%d/PRE%s' % (year, week) 
-            scrapegames = scraper.go(url)
-            weekgames = scrapegames.find_all( #scrapes all games
-                'div', {'class': 'schedules-list-content'})
-            for slot in weekgames:   #for each game add to weekly list
-                gameids['preseason'][year][week].append(slot['data-gameid'])
-                sleep(sleeper)
+        #for week in preseason: #for each preseason game
+          #  gameids['preseason'][year][week] = [] # creates list to hold gameids
+          #  url = sch + '%d/PRE%s' % (year, week) 
+          #  scrapegames = scraper.go(url)
+           # weekgames = scrapegames.find_all( #scrapes all games
+            #    'div', {'class': 'schedules-list-content'})
+            #for slot in weekgames:   #for each game add to weekly list
+               # gameids['preseason'][year][week].append(slot['data-gameid'])
+              #  sleep(sleeper)
 
         gameids['regular_season'][year] = {} #creates dictionary to hold weeks for each year
         for week in regseason:
