@@ -1,4 +1,4 @@
--Run scrape_game_ids.py then scrape_game_data.py 
--My program was written in python2 so some of the functions might not work with python3
--scrape_game_ids.py fetches all of the game ids from the last 10 seasons
--scrape_game_data.py fetches all of the stats from the given game ids
+- Run scrape_game_ids.py then scrape_game_data.py 
+- My program was written in python2 so some of the functions might not work with python3
+- scrape_game_ids.py fetches all of the game ids from the last 10 seasons
+- scrape_game_data.py fetches all of the stats from the given game ids
