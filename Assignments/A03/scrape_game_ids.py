@@ -6,6 +6,17 @@ import sys
 from time import sleep
 from random import shuffle
 import os
+"""
+Course: cmps 4883
+Assignemt: A03
+Date: 2/10/19
+Github username: acdczlc
+Repo url: https://github.com/acdczlc/4883-SWTools-Conley
+Name: Zac Conley
+Description: 
+  scrapes ids from internet
+
+"""
 sleeper=.01 #set sleep timer to prevent over requesting server
 scraper = BeautifulScraper() #initialize scraper
 sch = "http://www.nfl.com/schedules/" #url of schedules
