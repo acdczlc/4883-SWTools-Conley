@@ -6,6 +6,17 @@ import sys
 from time import sleep
 from random import shuffle
 import os
+"""
+Course: cmps 4883
+Assignemt: A03
+Date: 2/10/19
+Github username: acdczlc
+Repo url: https://github.com/acdczlc/4883-SWTools-Conley
+Name: Zac Conley
+Description: 
+  gets all stats
+
+"""
 stats_url = "http://www.nfl.com/liveupdate/game-center/"
 name = "gameids_from_2009_to_2019.json" #file full of game ids
 sleeper=.01 #sleep duration
