@@ -7,8 +7,8 @@ used your functions from a03.php on github
 */
 //Connect to mysql
 $host = "localhost";            //add username and password
-$user = "*******";        // user name
-$password = "*******";         // password 
+$user = "******";        // user name
+$password = "******";         // password 
 $database = "nfl_data";             // database 
 $mysqli = mysqli_connect($host, $user, $password, $database);
 
@@ -154,24 +154,15 @@ Date: 2/23/2019
 ==================================================================================');
 //start of questions
 $question = "1. Find the player(s) that played for the most teams.";
-$pads = [8,26,12,5];
-$sql = "SELECT id as playerid,name,count(distinct(club)) as count FROM `players` group by id,name ORDER BY `count` DESC LIMIT 5";
+$pads = [4,12,26,12,5];
+$sql = "SELECT id as playerid,name,count(distinct(club)) as count FROM `players` group by id,name ORDER BY `count` DESC LIMIT 10";
 $response = runQuery($mysqli,$sql);
-$cols = ['id','name','count'];
+$cols = ['id','playerid','name','count'];
 displayQuery($question,$sql,$cols,$pads);
 
 $question = "2. Top 5 rushers per year.";
 $pads = [6,13,15,10,5];
-$sql = "(SELECT playerid,name,players_stats.season,sum(yards) as Rushing_yards FROM `players_stats`join players on players_stats.playerid=players.id and players_stats.season=players.season WHERE ( statid=10 or statid=11 or statid=12 or statid=13) and players_stats.season=2009 group by season,playerid ORDER BY `Rushing_yards`DESC limit 5) union all (SELECT playerid,name,players_stats.season,sum(yards)as Rushing_yards FROM `players_stats`join players on players_stats.playerid=players.id and players_stats.season=players.season WHERE ( statid=10 or statid=11 or statid=12 or statid=13) and players_stats.season=2010 group by season,playerid  
-ORDER BY `Rushing_yards`DESC limit 5) union all (SELECT playerid,name,players_stats.season,sum(yards) as Rushing_yards FROM `players_stats`join players on players_stats.playerid=players.id and players_stats.season=players.season WHERE ( statid=10 or statid=11 or statid=12 or statid=13) and players_stats.season=2011 group by season,playerid  
-ORDER BY `Rushing_yards`DESC limit 5) union all (SELECT playerid,name,players_stats.season,sum(yards) as Rushing_yards FROM `players_stats`join players on players_stats.playerid=players.id and players_stats.season=players.season WHERE ( statid=10 or statid=11 or statid=12 or statid=13) and players_stats.season=2012 group by season,playerid  
-ORDER BY `Rushing_yards`DESC limit 5) union all (SELECT playerid,name,players_stats.season,sum(yards) as Rushing_yards FROM `players_stats`join players on players_stats.playerid=players.id and players_stats.season=players.season WHERE ( statid=10 or statid=11 or statid=12 or statid=13) and players_stats.season=2013 group by season,playerid  
-ORDER BY `Rushing_yards`DESC limit 5) union all (SELECT playerid,name,players_stats.season,sum(yards) as Rushing_yards FROM `players_stats`join players on players_stats.playerid=players.id and players_stats.season=players.season WHERE ( statid=10 or statid=11 or statid=12 or statid=13) and players_stats.season=2014 group by season,playerid  
-ORDER BY `Rushing_yards`DESC limit 5) union all (SELECT playerid,name,players_stats.season,sum(yards) as Rushing_yards FROM `players_stats`join players on players_stats.playerid=players.id and players_stats.season=players.season WHERE ( statid=10 or statid=11 or statid=12 or statid=13) and players_stats.season=2015 group by season,playerid  
-ORDER BY `Rushing_yards`DESC limit 5) union all (SELECT playerid,name,players_stats.season,sum(yards) as Rushing_yards FROM `players_stats`join players on players_stats.playerid=players.id and players_stats.season=players.season WHERE ( statid=10 or statid=11 or statid=12 or statid=13) and players_stats.season=2016 group by season,playerid  
-ORDER BY `Rushing_yards`DESC limit 5) union all (SELECT playerid,name,players_stats.season,sum(yards) as Rushing_yards FROM `players_stats`join players on players_stats.playerid=players.id and players_stats.season=players.season WHERE ( statid=10 or statid=11 or statid=12 or statid=13) and players_stats.season=2017 group by season,playerid  
-ORDER BY `Rushing_yards`DESC limit 5) union all (SELECT playerid,name,players_stats.season,sum(yards) as Rushing_yards FROM `players_stats`join players on players_stats.playerid=players.id and players_stats.season=players.season WHERE ( statid=10 or statid=11 or statid=12 or statid=13) and players_stats.season=2018 group by season,playerid  
-ORDER BY `Rushing_yards`DESC limit 5)
+$sql = "SELECT playerid,name,players_stats.season,sum(yards) as Rushing_yards FROM `players_stats`join players on players_stats.playerid=players.id and players_stats.season=players.season WHERE ( statid=10 or statid=11 or statid=12 or statid=13) group by season,playerid ORDER BY `Rushing_yards`DESC limit 5
 ";
 $response = runQuery($mysqli,$sql);
 $cols = ['id','playerid','name','season','Rushing_yards'];
@@ -179,8 +170,7 @@ displayQuery($question,$sql,$cols,$pads);
 
 $question = "3. Bottom 5 passers per year.";
 $pads = [6,13,15,10,5];
-$sql = "(SELECT playerid,name,players_stats.season,sum(yards) as Total_Passing_Yards FROM `players_stats` join players on players_stats.playerid=players.id and players_stats.season=players.season WHERE (statid=15 or statid=16 or statid =17 or statid=18) and players_stats.season=2009 group by playerid,season ORDER BY Total_Passing_Yards Asc limit 5)union all (SELECT playerid,name,players_stats.season,sum(yards) as Total_Passing_Yards FROM `players_stats` join players on players_stats.playerid=players.id and players_stats.season=players.season WHERE (statid=15 or statid=16 or statid =17 or statid=18) and players_stats.season=2010 group by playerid,season ORDER BY Total_Passing_Yards Asc limit 5)union all (SELECT playerid,name,players_stats.season,sum(yards) as Total_Passing_Yards FROM `players_stats` join players on players_stats.playerid=players.id and players_stats.season=players.season WHERE (statid=15 or statid=16 or statid =17 or statid=18) and players_stats.season=2011 group by playerid,season ORDER BY Total_Passing_Yards Asc limit 5)union all (SELECT playerid,name,players_stats.season,sum(yards) as Total_Passing_Yards FROM `players_stats` join players on players_stats.playerid=players.id and players_stats.season=players.season WHERE (statid=15 or statid=16 or statid =17 or statid=18) and players_stats.season=2012 group by playerid,season ORDER BY Total_Passing_Yards Asc limit 5)union all (SELECT playerid,name,players_stats.season,sum(yards) as Total_Passing_Yards FROM `players_stats` join players on players_stats.playerid=players.id and players_stats.season=players.season WHERE (statid=15 or statid=16 or statid =17 or statid=18) and players_stats.season=2013 group by playerid,season ORDER BY Total_Passing_Yards Asc limit 5)union all (SELECT playerid,name,players_stats.season,sum(yards) as Total_Passing_Yards FROM `players_stats` join players on players_stats.playerid=players.id and players_stats.season=players.season WHERE (statid=15 or statid=16 or statid =17 or statid=18) and players_stats.season=2014 group by playerid,season ORDER BY Total_Passing_Yards Asc limit 5)union all (SELECT playerid,name,players_stats.season,sum(yards) as Total_Passing_Yards FROM `players_stats` join players on players_stats.playerid=players.id and players_stats.season=players.season WHERE (statid=15 or statid=16 or statid =17 or statid=18) and players_stats.season=2015 group by playerid,season ORDER BY Total_Passing_Yards Asc limit 5)union all (SELECT playerid,name,players_stats.season,sum(yards) as Total_Passing_Yards FROM `players_stats` join players on players_stats.playerid=players.id and players_stats.season=players.season WHERE (statid=15 or statid=16 or statid =17 or statid=18) and players_stats.season=2016 group by playerid,season ORDER BY Total_Passing_Yards Asc limit 5)union all (SELECT playerid,name,players_stats.season,sum(yards) as Total_Passing_Yards FROM `players_stats` join players on players_stats.playerid=players.id and players_stats.season=players.season WHERE (statid=15 or statid=16 or statid =17 or statid=18) and players_stats.season=2017 group by playerid,season ORDER BY Total_Passing_Yards Asc limit 5)union all (SELECT playerid,name,players_stats.season,sum(yards) as Total_Passing_Yards FROM `players_stats` join players on players_stats.playerid=players.id and players_stats.season=players.season WHERE (statid=15 or statid=16 or statid =17 or statid=18) and players_stats.season=2018 group by playerid,season ORDER BY Total_Passing_Yards Asc limit 5)
-";
+$sql = "SELECT playerid,name,players_stats.season,sum(yards) as Total_Passing_Yards FROM `players_stats` join players on players_stats.playerid=players.id and players_stats.season=players.season WHERE (statid=15 or statid=16 or statid =17 or statid=18) group by playerid,season ORDER BY Total_Passing_Yards Asc limit 5";
 $response = runQuery($mysqli,$sql);
 $cols = ['id','playerid','name','season','Total_Passing_Yards'];
 displayQuery($question,$sql,$cols,$pads);
@@ -193,15 +183,15 @@ $cols = ['id','playerid','name', 'rushes_for_loss'];
 displayQuery($question,$sql,$cols,$pads);
 
 $question = "5. Find the top 5 teams with the most penalties.";
-$pads = [6,13,15];
+$pads = [6,8,15];
 $sql = "SELECT club,sum(pen)as total_penalties FROM `game_totals` group by club order by total_penalties desc limit 5";
 $response = runQuery($mysqli,$sql);
 $cols = ['id','club','total_penalties'];
 displayQuery($question,$sql,$cols,$pads);
 
 $question = "6. Find the average number of penalties per year.";
-$pads = [6,13,25,16];
-$sql = "SELECT season,sum(pen) as total_penalties,sum(pen)/ (count(pen)/2) as avg_penalties_per_game FROM `game_totals` group by season";
+$pads = [6,13,18,16];
+$sql = "SELECT season,sum(pen) as total_penalties,sum(pen)/ (count(pen)/2) as avg_penalties_per_game FROM `game_totals` group by season order by avg_penalties_per_game asc";
 $response = runQuery($mysqli,$sql);
 $cols = ['id','season','total_penalties','avg_penalties_per_game'];
 displayQuery($question,$sql,$cols,$pads);
