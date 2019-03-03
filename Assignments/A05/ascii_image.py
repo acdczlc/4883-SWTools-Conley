@@ -3,7 +3,7 @@ import sys
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 #Zac Conley
-#Text image A04
+#Text image A05
 #Program turns image into an image made from text
 
 #This function converts an image into a text image
@@ -32,7 +32,7 @@ def textImage(**kwargs):
 
 if __name__=='__main__':
     print("Zac Conley")
-    print("Text image - A04")
+    print("Text image - A05")
     print("Program turns image into an image made from text")
     source = os.path.dirname(os.path.abspath(__file__)) #where this file is located
     if(len(sys.argv)==5): #if 4 arguments recieved
