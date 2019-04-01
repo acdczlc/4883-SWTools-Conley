@@ -1,5 +1,5 @@
 #Zac Conley
-# A08-Mosiac-process_emojis.py
+# A08-Mosaic-process_emojis.py
 #This program processes all emojis in a given folder
 import os
 import sys
@@ -12,7 +12,7 @@ from sklearn.cluster import KMeans
 
 if __name__=='__main__':
     print("\nZac Conley")
-    print("A08-Mosiac-process_emojis.py")
+    print("A08-Mosaic-process_emojis.py")
     print("This program processes all emojis in a given folder \n")
     args = {}
     for arg in sys.argv[1:]: #split command line arguments
