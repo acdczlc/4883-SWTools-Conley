@@ -1,6 +1,6 @@
 #Zac Conley
-# A08-Mosiac-Mosiac.py
-#This program creates a mosiac of a pic using emojis
+# A08-Mosaic-Mosaic.py
+#This program creates a mosaic of a pic using emojis
 import os
 import sys
 import requests #hits api
@@ -62,8 +62,8 @@ def find_emoji(color):
 
 if __name__=='__main__':
     print("\nZac Conley")
-    print("A08-Mosiac-Mosiac.py")
-    print("This program creates a mosiac of a pic using emojis \n")
+    print("A08-Mosaic-Mosaic.py")
+    print("This program creates a mosaic of a pic using emojis \n")
     print("This will take a while!")
     print("if you wish to speed up the process you can increase the chunk size to decrease the quality!")
     args = {}
@@ -114,7 +114,7 @@ if __name__=='__main__':
             f_name = name+"mosaic."+dot
             newimg.save(f_name)
         else:
-            newimg.save(output+"/"+name+"mosaic."+dot) #save mosiac in output folder
+            newimg.save(output+"/"+name+"mosaic."+dot) #save mosaic in output folder
         print("File saved!")
     except:
         print("An error has occurred with your input. Please check the github documentation")
