@@ -15,7 +15,7 @@ class Button:
     def __init__(self, rect, command):
         self.rect = pygame.Rect(rect)
         self.image = pygame.Surface(self.rect.size).convert()
-        self.image.fill((0,255,0)) #green
+        self.image.fill((0,0,0)) #green
         self.function = command
  
     def get_event(self, event):
@@ -31,11 +31,13 @@ class Button:
         surf.blit(self.image, self.rect)
 
 def button_was_pressed(): #starts a new game
+    global start_time
     start_time = time.time()
     game = Game()  # start a game
 
 class Game:
     def __init__(self):
+        global start_time
         winner=False
         self.grid_size = 10  # default
         if len(sys.argv) > 1:
@@ -114,15 +116,15 @@ class Game:
         stop=0
         while (True):
             if(winner==False):
-                pygame.display.set_caption(self.turn + self.caption + "     A:" + str(self.a_boxes) + "   B:" + str(
-                self.b_boxes)+"  Time: "+str(round(time.time() - start_time,2)))
+                pygame.display.set_caption(self.turn + self.caption + "     A:" + str(
+                            self.a_boxes) + "   B:"+ str(self.b_boxes)+"  Time: "+str(round(time.time() - start_time,2)))
             else:
                 if(stop==0): #after winner is declared draw button
                     btn = Button(rect=(50,50,105,25), command=button_was_pressed)
                     center=((30*self.grid_size+4)/2-50)
                     btn.draw(self.screen,center)
-                    font=pygame.font.SysFont('Arial', 25)
-                    self.screen.blit(font.render('New Game', True, (255,0,0)), (center, center))
+                    font=pygame.font.Font('Arial.ttf',12)
+                    self.screen.blit(font.render('  New Game', True, (255,255,255)), (center, center))
                     pygame.display.update()
                     stop=1
             # go through all events and check the types
@@ -180,12 +182,6 @@ class Game:
                         winner=True
 
                     else:
-
-                        # set the display caption
-                        pygame.display.set_caption(self.turn + self.caption + "     A:" + str(
-                            self.a_boxes) + "   B:"+ str(self.b_boxes)+"  Time: "+str(round(time.time() - start_time,2)))
-
-                        # update the players screen
                         pygame.display.flip()
                         
     def get_number_of_walls(self, slot_column, slot_row):
@@ -273,6 +269,7 @@ class Game:
         If so change the caption to display the winner
         :return: won or not
         """
+        global start_time
         finaltime=round(time.time() - start_time,2)
         if self.a_boxes + self.b_boxes + self.x_boxes == self.grid_size ** 2:
             if self.a_boxes < self.b_boxes:
@@ -295,6 +292,7 @@ class Game:
     
 
     def show(self):
+        global start_time
         """
         Reload the screen
         Use the current grid and wall information to
@@ -339,8 +337,8 @@ class Game:
                 elif self.grid_status[column][row] == 3:
                     self.screen.blit(self.X, (x, y))
 
-        pygame.display.set_caption(self.turn + self.caption + "     A:" + str(self.a_boxes) + "   B:" + str(
-            self.b_boxes)+"  Time: "+str(round(time.time() - start_time,2)))
+        pygame.display.set_caption(self.turn + self.caption + "     A:" + str(
+                            self.a_boxes) + "   B:"+ str(self.b_boxes)+"  Time: "+str(round(time.time() - start_time,2)))
         pygame.display.flip()
 
 
