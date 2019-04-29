@@ -61,11 +61,11 @@ def button_was_pressed(): #starts a new game
     game = Game()  # start a game
 
 class Game:
-    def __init__(self):
+    def __init__(self,c):
         global start_time
         winner=False
         self.grid_size = 10  # default
-        
+        self.c=c
         if len(sys.argv) > 1:
             self.grid_size = int(sys.argv[1])
 
@@ -201,6 +201,7 @@ class Game:
                     if not self.set_all_slots() > 0:
                         if self.turn == "A":
                             self.turn = "B"
+                            self.c.send(b"your turn")
                         elif self.turn == "B":
                             self.turn = "A"
 
@@ -377,9 +378,11 @@ while True:
    print ('Got connection from', addr) 
   
    # send a thank you message to the client.  
-   c.send('Thank you for connecting') 
+   c.send(b'Thank you for connecting') 
+   c.send(b'Hosts turn') 
+   print (c.recv(1024))
    
-   game = Game()  # start a game
+   game = Game(c)  # start a game
 
    # Close the connection with the client 
    c.close() 

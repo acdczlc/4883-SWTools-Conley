@@ -23,8 +23,9 @@ s.connect(('127.0.0.1', port))
   
 # receive data from the server 
 print (s.recv(1024)) 
-
-
+print (s.recv(1024))
+print (s.send(b'my turn'))
+print (s.recv(1024))
 
 #class for new game button found on tutorial and modified
 class Button:
@@ -53,11 +54,11 @@ def button_was_pressed(): #starts a new game
     game = Game()  # start a game
 
 class Game:
-    def __init__(self):
+    def __init__(self,s):
         global start_time
         winner=False
         self.grid_size = 10  # default
-        
+        self.s=s
         if len(sys.argv) > 1:
             self.grid_size = int(sys.argv[1])
 
@@ -133,6 +134,8 @@ class Game:
         self.show()
         stop=0
         while (True):
+            if(self.s.recv(1024)):
+                print (self.s.recv(1024))
             if(winner==False):
                 pygame.display.set_caption(self.turn + self.caption + "     A:" + str(
                             self.a_boxes) + "   B:"+ str(self.b_boxes)+"  Time: "+str(round(time.time() - start_time,2)))
@@ -363,7 +366,7 @@ class Game:
 
 
 
-game = Game()  # start a game
+game = Game(s)  # start a game
 
 # close the connection 
 s.close()    

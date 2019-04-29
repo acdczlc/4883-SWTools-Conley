@@ -7,15 +7,14 @@ import sys
 import time
 import random
 from pygame.locals import *
-
+from time import sleep
 start_time = time.time()
-
 #class for new game button found on tutorial and modified
 class Button:
     def __init__(self, rect, command):
         self.rect = pygame.Rect(rect)
         self.image = pygame.Surface(self.rect.size).convert()
-        self.image.fill((0,0,0)) #green
+        self.image.fill((0,0,0))
         self.function = command
  
     def get_event(self, event):
@@ -26,15 +25,35 @@ class Button:
         if self.rect.collidepoint(event.pos):
             self.function()
  
-    def draw(self, surf,c): #draws button in center of screen
-        self.rect.topleft=(c,c)
-        surf.blit(self.image, self.rect)
-
-def button_was_pressed(): #starts a new game
+    def draw(self, surf,x,y): #draws button in center of screen
+        self.rect.topleft=(x,y)
+        surf.blit(self.image, self.rect)    
+def local(): #starts a new game
     global start_time
     start_time = time.time()
     game = Game()  # start a game
-
+def online():
+    print("No")
+def menu():
+    screen = pygame.display.set_mode([304,304])
+    pygame.init()
+    pygame.display.set_caption("Squares")
+    btn = Button(rect=(50,50,105,25), command=local)
+    x=102
+    y=102
+    btn.draw(screen,x,y)
+    font=pygame.font.Font('Arial.ttf',12)
+    screen.blit(font.render('Local Multiplayer', True, (255,255,255)), (x, y))
+    btn2 = Button(rect=(50,50,105,25), command=online)
+    y=152
+    btn2.draw(screen,x,y)
+    font=pygame.font.Font('Arial.ttf',12)
+    screen.blit(font.render('Online Multiplayer', True, (255,255,255)), (x, y))
+    pygame.display.update()
+    while(True):
+        for event in pygame.event.get():
+            btn.get_event(event)
+            btn2.get_event(event)
 class Game:
     def __init__(self):
         global start_time
@@ -42,6 +61,7 @@ class Game:
         self.grid_size = 10  # default
         if len(sys.argv) > 1:
             self.grid_size = int(sys.argv[1])
+        self.clock=pygame.time.Clock()
 
         # It turns out that there are nice structures when setting ~0.75 walls per slot
         self.start_walls = int(0.75 * self.grid_size ** 2)
@@ -115,22 +135,27 @@ class Game:
         self.show()
         stop=0
         while (True):
+            self.clock.tick(60)
             if(winner==False):
                 pygame.display.set_caption(self.turn + self.caption + "     A:" + str(
                             self.a_boxes) + "   B:"+ str(self.b_boxes)+"  Time: "+str(round(time.time() - start_time,2)))
             else:
                 if(stop==0): #after winner is declared draw button
-                    btn = Button(rect=(50,50,105,25), command=button_was_pressed)
-                    center=((30*self.grid_size+4)/2-50)
-                    btn.draw(self.screen,center)
+                    btn = Button(rect=(50,50,105,25), command=local)
+                    btn.draw(self.screen,100,100)
                     font=pygame.font.Font('Arial.ttf',12)
-                    self.screen.blit(font.render('  New Game', True, (255,255,255)), (center, center))
+                    self.screen.blit(font.render('New Game', True, (255,255,255)), (100, 100))
+                    btn3 = Button(rect=(50,50,105,25), command=menu)
+                    btn3.draw(self.screen,100,150)
+                    font=pygame.font.Font('Arial.ttf',12)
+                    self.screen.blit(font.render('Menu', True, (255,255,255)), (100, 150))
                     pygame.display.update()
                     stop=1
             # go through all events and check the types
             for event in pygame.event.get():
                 if(stop==1):
                     btn.get_event(event)
+                    btn3.get_event(event)
                 # quit the game when the player closes it
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -342,4 +367,5 @@ class Game:
         pygame.display.flip()
 
 
-game = Game()  # start a game
+
+menu()

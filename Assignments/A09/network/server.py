@@ -4,13 +4,13 @@ import sys
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-server = ''
+server = '192.168.1.16'
 port = 5555
 
-server_ip = socket.gethostbyname(server)
+server_ip = socket.gethostname()
 
 try:
-    s.bind((server, port))
+    s.bind((server_ip, port))
 
 except socket.error as e:
     print(str(e))
