@@ -8,9 +8,10 @@ import time
 import random
 from pygame.locals import *
 from time import sleep
+import csv
 start_time = time.time()
 #class for new game button found on tutorial and modified
-class Button:
+class Button: #create new buttons
     def __init__(self, rect, command):
         self.rect = pygame.Rect(rect)
         self.image = pygame.Surface(self.rect.size).convert()
@@ -27,13 +28,38 @@ class Button:
  
     def draw(self, surf,x,y): #draws button in center of screen
         self.rect.topleft=(x,y)
-        surf.blit(self.image, self.rect)    
+        surf.blit(self.image, self.rect)  
+
+    #function for local multiplayer button
 def local(): #starts a new game
     global start_time
     start_time = time.time()
     game = Game()  # start a game
+
+    #function for online multiplayer button
 def online():
-    print("No")
+    print("Coming Soon")
+
+    #function to show leaderboards
+def leaderboard_prt():
+    with open ("protleader.csv", "r") as file:
+        sortlist=[]
+        reader=csv.reader(file)
+        for i in reader:
+            ix=i[0]
+            iy=i[1]
+            it=[int(ix),iy]
+            sortlist.append(it)
+    sortlist.sort() #sort list by inner list
+    sortlist.reverse() #descending order
+    if(len(sortlist)>5):
+        printer=5
+    else:
+        printer=(len(sortlist))
+    for i in range(printer):
+        print(sortlist[i])
+
+        #function to launch main menu
 def menu():
     screen = pygame.display.set_mode([304,304])
     pygame.init()
@@ -49,11 +75,18 @@ def menu():
     btn2.draw(screen,x,y)
     font=pygame.font.Font('Arial.ttf',12)
     screen.blit(font.render('Online Multiplayer', True, (255,255,255)), (x, y))
+    btnldr = Button(rect=(50,50,105,25), command=leaderboard_prt)
+    y=202
+    btnldr.draw(screen,x,y)
+    font=pygame.font.Font('Arial.ttf',12)
+    screen.blit(font.render('  Leaderboards', True, (255,255,255)), (x, y))
     pygame.display.update()
     while(True):
         for event in pygame.event.get():
             btn.get_event(event)
             btn2.get_event(event)
+            btnldr.get_event(event)
+
 class Game:
     def __init__(self):
         global start_time
@@ -138,7 +171,7 @@ class Game:
             self.clock.tick(60)
             if(winner==False):
                 pygame.display.set_caption(self.turn + self.caption + "     A:" + str(
-                            self.a_boxes) + "   B:"+ str(self.b_boxes)+"  Time: "+str(round(time.time() - start_time,2)))
+                            self.a_boxes) + "   B:"+ str(self.b_boxes))
             else:
                 if(stop==0): #after winner is declared draw button
                     btn = Button(rect=(50,50,105,25), command=local)
@@ -149,13 +182,37 @@ class Game:
                     btn3.draw(self.screen,100,150)
                     font=pygame.font.Font('Arial.ttf',12)
                     self.screen.blit(font.render('Menu', True, (255,255,255)), (100, 150))
+                    ldrbtn = Button(rect=(50,50,105,25), command=leaderboard_prt)
+                    ldrbtn.draw(self.screen,100,200)
+                    font=pygame.font.Font('Arial.ttf',12)
+                    self.screen.blit(font.render('Leaderboard', True, (255,255,255)), (100, 200))
                     pygame.display.update()
+                    if(self.a_boxes>self.b_boxes):
+                        username="A"
+                        score=self.a_boxes
+                    else:
+                        username="B"
+                        score=self.b_boxes
+                    with open ("protleader.csv", "a", newline='') as file:
+                        fields=['score', 'name']
+                        writer=csv.DictWriter(file, fieldnames=fields)
+                        writer.writerow({'score' : int(score), 'name' : username})
+
+                    with open ("protleader.csv", "r") as file:
+                        sortlist=[]
+                        reader=csv.reader(file)
+                        for i in reader:
+                            sortlist.append(i)
+                    for i in range(len(sortlist)):
+                        if i != 0:
+                            sortlist[i][0]=int(sortlist[i][int(0)])
                     stop=1
             # go through all events and check the types
             for event in pygame.event.get():
                 if(stop==1):
                     btn.get_event(event)
                     btn3.get_event(event)
+                    ldrbtn.get_event(event)
                 # quit the game when the player closes it
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -363,7 +420,7 @@ class Game:
                     self.screen.blit(self.X, (x, y))
 
         pygame.display.set_caption(self.turn + self.caption + "     A:" + str(
-                            self.a_boxes) + "   B:"+ str(self.b_boxes)+"  Time: "+str(round(time.time() - start_time,2)))
+                            self.a_boxes) + "   B:"+ str(self.b_boxes))
         pygame.display.flip()
 
 
