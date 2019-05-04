@@ -2,6 +2,109 @@ import pygame
 import math
 from PodSixNet.Connection import ConnectionListener, connection
 from time import sleep
+import time
+import csv
+start_time=0
+class Button: #create new buttons
+    def __init__(self, rect, command):
+        self.rect = pygame.Rect(rect)
+        self.image = pygame.Surface(self.rect.size).convert()
+        self.image.fill((0,0,0))
+        self.function = command
+ 
+    def get_event(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            self.on_click(event)
+ 
+    def on_click(self, event):
+        if self.rect.collidepoint(event.pos):
+            self.function()
+ 
+    def draw(self, surf,x,y): #draws button in center of screen
+        self.rect.topleft=(x,y)
+        surf.blit(self.image, self.rect)  
+
+    #function for local multiplayer button
+def local(): #starts a new game
+    global start_time
+    start_time = time.time()
+    game = Game()  # start a game
+
+    #function for online multiplayer button
+def online():
+    bg=BoxesGame() #__init__ is called right here
+    while 1:
+        if bg.update()==1:
+            break
+    bg.finished()
+
+    #function to show leaderboards
+def leaderboard_prt():
+    with open ("protleader.csv", "r") as file:
+        sortlist=[]
+        reader=csv.reader(file)
+        for i in reader:
+            ix=i[0]
+            iy=i[1]
+            it=[int(ix),iy]
+            sortlist.append(it)
+    sortlist.sort() #sort list by inner list
+    sortlist.reverse() #descending order
+    if(len(sortlist)>5):
+        printer=5
+    else:
+        printer=(len(sortlist))
+    for i in range(printer):
+        print(sortlist[i])
+    screen = pygame.display.set_mode([304,304])
+    pygame.init()
+    pygame.display.set_caption("Leaderboard")
+    font=pygame.font.Font('Arial.ttf',12)
+    screen.blit(font.render('Top Scores', True, (255,255,255)), (102, 102))
+    y=122
+    for i in range(printer):
+         screen.blit(font.render(str(sortlist[i][1])+"   "+str(sortlist[i][0]), True, (255,255,255)), (108, y))
+         y+=20
+    btn = Button(rect=(50,50,105,25), command=menu)
+    btn.draw(screen,102,250)
+    screen.blit(font.render('Back to Menu', True, (255,255,255)), (102, 250))
+    pygame.display.update()
+
+    while(True):
+        for event in pygame.event.get():
+            btn.get_event(event)
+        
+    
+        #function to launch main menu
+def menu():
+    screen = pygame.display.set_mode([304,304])
+    pygame.init()
+    pygame.display.set_caption("Squares")
+    btn = Button(rect=(50,50,105,25), command=local)
+    x=102
+    y=102
+    btn.draw(screen,x,y)
+    font=pygame.font.Font('Arial.ttf',12)
+    screen.blit(font.render('Local Multiplayer', True, (255,255,255)), (x, y))
+    btn2 = Button(rect=(50,50,105,25), command=online)
+    y=152
+    btn2.draw(screen,x,y)
+    font=pygame.font.Font('Arial.ttf',12)
+    screen.blit(font.render('Online Multiplayer', True, (255,255,255)), (x, y))
+    btnldr = Button(rect=(50,50,105,25), command=leaderboard_prt)
+    y=202
+    btnldr.draw(screen,x,y)
+    font=pygame.font.Font('Arial.ttf',12)
+    screen.blit(font.render('  Leaderboards', True, (255,255,255)), (x, y))
+    pygame.display.update()
+    while(True):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                exit()
+            btn.get_event(event)
+            btn2.get_event(event)
+            btnldr.get_event(event)
+
 class BoxesGame(ConnectionListener):
     def initSound(self):
         pygame.mixer.music.load("music.wav")
@@ -233,14 +336,22 @@ class BoxesGame(ConnectionListener):
                     if self.owner[x][y]=="lose":
                         self.screen.blit(self.othermarker, (x*64+5, y*64+5))
     def finished(self):
+        if(self.didiwin):
+            username="Me"
+            with open ("protleader.csv", "a", newline='') as file:
+                fields=['score', 'name']
+                writer=csv.DictWriter(file, fieldnames=fields)
+                writer.writerow({'score' : int(self.me), 'name' : username})
         self.screen.blit(self.gameover if not self.didiwin else self.winningscreen, (0,0))
+        font=pygame.font.Font('Arial.ttf',12)
+        btn = Button(rect=(50,50,105,25), command=menu)
+        btn.draw(self.screen,135,280)
+        self.screen.blit(font.render('Back to Menu', True, (255,255,255)), (138, 282))
+        pygame.display.update()
         while 1:
             for event in pygame.event.get():
+                btn.get_event(event)
                 if event.type == pygame.QUIT:
                     exit()
             pygame.display.flip()
-bg=BoxesGame() #__init__ is called right here
-while 1:
-    if bg.update()==1:
-        break
-bg.finished()
+menu()
